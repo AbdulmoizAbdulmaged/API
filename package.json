@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon  index.js"
+    "start": "node  index.js"
   },
   "keywords": [],
   "author": "",
+  "engines": {"node": "20.9.0"},
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
