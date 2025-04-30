@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const ProductSchema = new mongoose.Schema(
+const FoodSchema = new mongoose.Schema(
   {
     barcode: {type: String, required: true, unique: true},
     title: {type: String, required: true,unique: true},
@@ -22,4 +22,4 @@ const ProductSchema = new mongoose.Schema(
 {timestamps: true}
 );
 
-module.exports = mongoose.model("Product",ProductSchema);
+module.exports = mongoose.model("Food",FoodSchema);

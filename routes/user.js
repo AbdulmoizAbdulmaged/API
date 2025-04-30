@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { verifyToken,verifyTokenAndAutherization, verifyTokenAndAdmin } = require('./verifyToken');
 const Crypto = require('crypto');
 const User = require('../models/user');
-const user = require('../models/user');
+const Customer = require('../models/customer');
 CryptoJS = require("crypto-js");
 
 //update user
@@ -102,7 +102,43 @@ router.get('/stats',verifyTokenAndAdmin,async (req,res)=>{
       res.status(500).json(err);
       //return; // Prevents further execution
    }
+});
+
+//using customer model create route for update point value only
+router.put('/customer/:id',async (req,res)=>{
+   try
+   {
+    const updatedUser = await Customer.findByIdAndUpdate(req.params.id,{
+      $set : req.body,
+    },{new: true});
+    
+    res.status(200).json(updatedUser);
+    return; // Prevents further execution
+
+   }catch (err){
+      res.status(500).json(err);
+      return; // Prevents further execution
+   }
+});
+
+//create route /customer/find/:id for find single customer
+router.get('/customer/find/:id',async (req,res)=>{
+   try{
+
+    const user = await Customer.findById(req.params.id);
+
+    const {password,...others} = user._doc;
+
+    res.status(200).json(others);
+    return; // Prevents further execution
+   }catch(err)
+   {
+      res.status(500).json(err);
+      return; // Prevents further execution
+   }
 })
+
+
 
 
 

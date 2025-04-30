@@ -7,8 +7,10 @@ const cors = require('cors');
 const userRoute = require('./routes/user');
 const authRoute = require('./routes/auth');
 const productRoute = require('./routes/product');
+const foodRoute = require('./routes/food');
 const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
+const orderFoodRoute = require('./routes/foodOrder');
 const paymentRoute = require('./routes/stripe');
 
 
@@ -18,19 +20,28 @@ const mongoose = require('mongoose');
 dotenv.config();
 
 
-mongoose.connect(process.env.MONGO_URL)
+// Increase the payload size limit
+app.use(express.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+
+mongoose.connect(process.env.MONGO_URL )
 .then(()=>{console.log('DBConnection successfully up');})
 .catch((err)=>{console.log(err);});
 
-app.use(cors());
+app.use(cors(
+  {origin: "http://localhost:3000"}
+));
 //create an API
 app.use(express.json());
 
 app.use('/api/users', userRoute);
 app.use('/api/auth',authRoute);
 app.use('/api/products',productRoute);
+app.use('/api/foods',foodRoute);
 app.use('/api/carts',cartRoute);
 app.use('/api/orders',orderRoute);
+app.use('/api/foodOrders',orderFoodRoute);
 app.use('/api/checkout',paymentRoute);
 
 
