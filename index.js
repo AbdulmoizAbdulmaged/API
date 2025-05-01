@@ -29,8 +29,22 @@ mongoose.connect(process.env.MONGO_URL )
 .then(()=>{console.log('DBConnection successfully up');})
 .catch((err)=>{console.log(err);});
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://retail-ruddy.vercel.app"
+];
+
 app.use(cors(
-  {origin: "http://localhost:3000"}
+  {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true
+  }
 ));
 //create an API
 app.use(express.json());
