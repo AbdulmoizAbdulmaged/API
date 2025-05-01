@@ -31,7 +31,9 @@ mongoose.connect(process.env.MONGO_URL )
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://retail-ruddy.vercel.app"
+  "https://retail-ruddy.vercel.app",
+  "https://retail-git-main-abdulmoiz-abdulmageds-projects.vercel.app/",
+  "https://www.r9retail.com/",
 ];
 
 app.use(cors(
