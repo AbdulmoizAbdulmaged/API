@@ -34,7 +34,7 @@ const allowedOrigins = [
   "https://retail-ruddy.vercel.app",
   "https://retail-git-main-abdulmoiz-abdulmageds-projects.vercel.app",
   "https://www.r9retail.com",
-  "https://admin-sand-one.vercel.app/",
+  "https://admin-sand-one.vercel.app",
 ];
 
 app.use(cors(
