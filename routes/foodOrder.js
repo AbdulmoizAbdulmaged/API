@@ -70,6 +70,38 @@ router.get('/',verifyTokenAndAdmin,async (req,res)=>{
   }
 });
 
+//Get the all orders orders by depend on the status new, preparing, out,  make and sort by createdAt and order by descending and make the new orders first the preparing orders second and the out orders third.
+
+//Get all orders sorted by status and createdAt
+router.get('/sorted', verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const sortedOrders = await FoodOrder.aggregate([
+      {
+        $addFields: {
+          statusOrder: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$status", "new"] }, then: 1 },
+                { case: { $eq: ["$status", "preparing"] }, then: 2 },
+                { case: { $eq: ["$status", "out"] }, then: 3 },
+                
+              ],
+              default: 5
+            }
+          }
+        }
+      },
+      { $sort: { statusOrder: 1, createdAt: -1 } } // Sort by statusOrder (ascending) and createdAt (descending)
+    ]);
+
+    res.status(200).json(sortedOrders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+
 //GET last 10 Orders
 router.get('/lastorders',verifyTokenAndAdmin,async (req,res)=>{
   try{
