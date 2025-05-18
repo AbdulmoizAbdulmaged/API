@@ -25,13 +25,13 @@ const FoodOrderSchema = new mongoose.Schema({
   latitude: {type: String,default: null},
   distance: {type: String,default: null},
   approximateTime: {type: String,default: null},
-  status: {type: String, default: "new"},//new, preparing, out, delivered, canceled, fraud
+  status: {type: String, default: "new"},//new, preparing, out, delivered, cancelled, fraud
   payment: {type: String},
   transaction: {type: String},
   attachment:{type: String,default: null},
   receipt: {type: String,default: null},
   comment: {type: String,default: null},
-  paymentStatus: {type: Boolean,default: false},
+  paymentStatus: {type: String,default: "pending"},//pending,done
   deliveryStatus: {type: Boolean,default: false},
   
 },

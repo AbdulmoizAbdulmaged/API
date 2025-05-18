@@ -29,9 +29,11 @@ router.put('/:id',async (req,res)=>{
      {new: true})
 
      res.status(200).json(updatedFoodOrder);
+     return; // Prevents further execution
   }catch(err)
   {
     res.status(500).json(err);
+    return; // Prevents further execution
   }
 });
 
