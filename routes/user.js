@@ -138,6 +138,22 @@ router.get('/customer/find/:id',async (req,res)=>{
    }
 })
 
+//get all users where the type is delivery
+router.get('/delivery',async (req,res)=>{
+   
+   try{
+      
+      const users = await User.find({type: "delivery"});
+
+      res.status(200).json(users);
+      return; // Prevents further execution
+   }catch(err)
+   {
+      res.status(500).json(err);
+      return; // Prevents further execution
+   }
+})
+
 
 
 

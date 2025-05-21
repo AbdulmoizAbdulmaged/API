@@ -11,6 +11,8 @@ const UserSchema = new mongoose.Schema(
     isAdmin : {type: Boolean,default: false},
     img : {type: String},
     wish : {type:Array,default:[]},
+    type: {type: String, default: 'user'},//user,admin,delivery,cashier
+    isBlocked : {type: Boolean,default: false},
   },
   {timestamps: true}
 );
