@@ -34,6 +34,10 @@ dotenv.config();
 
 
 const cors = require('cors');
+const http = require('http'); // Add this
+const { Server } = require('socket.io'); // Add this
+
+
 
 
 
@@ -78,28 +82,45 @@ mongoose.connect(process.env.MONGO_URL )
 .then(()=>{console.log('DBConnection successfully up');})
 .catch((err)=>{console.log(err);});
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://localhost:5000",
-  "https://retail-ruddy.vercel.app",
-  "https://retail-git-main-abdulmoiz-abdulmageds-projects.vercel.app",
-  "https://www.r9retail.com",
-  "https://admin-sand-one.vercel.app", //https://admin-sand-one.vercel.app/
-];
-
-app.use(cors(
-  {
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+// Create HTTP server and attach Socket.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:5000",
+      "https://retail-ruddy.vercel.app",
+      "https://retail-git-main-abdulmoiz-abdulmageds-projects.vercel.app",
+      "https://www.r9retail.com",
+      "https://admin-sand-one.vercel.app"
+    ],
     credentials: true
   }
-));
+});
+
+// const allowedOrigins = [
+//   "http://localhost:3000",
+//   "http://localhost:3001",
+//   "http://localhost:5000",
+//   "https://retail-ruddy.vercel.app",
+//   "https://retail-git-main-abdulmoiz-abdulmageds-projects.vercel.app",
+//   "https://www.r9retail.com",
+//   "https://admin-sand-one.vercel.app", //https://admin-sand-one.vercel.app/
+// ];
+
+// app.use(cors(
+//   {
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true
+//   }
+// ));
 //create an API
 app.use(express.json());
 
@@ -121,8 +142,34 @@ app.use((req, res, next) => {
 });
 
 
+ io.on('connection', (socket) => {
+  console.log(`New client connected: ${socket.id}`);
+
+  // Join the room for the order
+  socket.on('joinRoom', (orderId) => {
+    socket.join(orderId);
+    console.log(`Socket ${socket.id} joined room ${orderId}`);
+  });
+
+  // Handle sending a chat message
+  socket.on('chatMessage', ({ orderId, sender, message }) => {
+    console.log(`Room ${orderId} | ${sender}: ${message}`);
+
+    // Only emit to users in this order's room
+    io.to(orderId).emit('chatMessage', { sender, message });
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`Client disconnected: ${socket.id}`);
+  });
+});
+
+
 // Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Backend server started on port ${PORT}`);
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => {
+//   console.log(`Backend server started on port ${PORT}`);
+// });
+server.listen(process.env.PORT || 5000, () => {
+  console.log(`Backend server started on port ${process.env.PORT || 5000}`);
 });
