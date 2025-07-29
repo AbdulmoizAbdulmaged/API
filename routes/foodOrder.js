@@ -49,17 +49,31 @@ router.delete('/:id',async (req,res)=>{
   }
 });
 
+
+
 //GET Order
 router.get('/find/:userId',async (req,res)=>{
 
   try{
-       const getFoodOrders = await FoodOrder.find({userId: req.params.userId,status: { $ne: 'canceled' }});
+       const getFoodOrders = await FoodOrder.find({userId: req.params.userId,status: { $ne: 'closed' }});
        res.status(200).json(getFoodOrders);
   }catch(err)
   {
     res.status(500).json(err);
   }
 });
+
+//GET Order by delivery boy phone and status is out
+router.get('/delivery/:phone',async (req,res)=>{
+  try{
+       const getFoodOrders = await FoodOrder.find({deliveryBoyPhone: req.params.phone,status: 'out'});
+       res.status(200).json(getFoodOrders);
+  }catch(err)
+  {
+    res.status(500).json(err);
+  }
+});
+
 
 //GET ALL Orders
 router.get('/',verifyTokenAndAdmin,async (req,res)=>{

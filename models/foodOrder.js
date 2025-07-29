@@ -20,12 +20,13 @@ const FoodOrderSchema = new mongoose.Schema({
   ],
   amount: {type: Number,required: true},
   discount:{type:Number,default: 0},
+  validationPeriod: { type: Date, default: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) },
   address: {type: Object},
   longitude: {type: String,default: null},
   latitude: {type: String,default: null},
   distance: {type: String,default: null},
   approximateTime: {type: String,default: null},
-  status: {type: String, default: "new"},//new, preparing, out, delivered, cancelled, fraud
+  status: {type: String, default: "new"},//new, preparing, out, delivered, closed, fraud,failed
   payment: {type: String},
   transaction: {type: String},
   attachment:{type: String,default: null},
@@ -33,6 +34,13 @@ const FoodOrderSchema = new mongoose.Schema({
   comment: {type: String,default: null},
   paymentStatus: {type: String,default: "pending"},//pending,done
   deliveryStatus: {type: Boolean,default: false},
+  messages: [
+    {
+      sender: { type: String  }, // 'user' or 'admin'
+      message: { type: String},
+      timestamp: { type: Date, default: Date.now }
+    }
+  ]
   
 },
 {timestamps: true}
