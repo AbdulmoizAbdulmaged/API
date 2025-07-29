@@ -3,33 +3,33 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
-const io = require('socket.io')(process.env.CHAT_PORT || 4000, {
-  cors: {
-    origin: "http://localhost:3000",
+// const io = require('socket.io')(process.env.CHAT_PORT || 4000, {
+//   cors: {
+//     origin: "http://localhost:3000",
   
-  }
-});
- io.on('connection', (socket) => {
-  console.log(`New client connected: ${socket.id}`);
+//   }
+// });
+//  io.on('connection', (socket) => {
+//   console.log(`New client connected: ${socket.id}`);
 
-  // Join the room for the order
-  socket.on('joinRoom', (orderId) => {
-    socket.join(orderId);
-    console.log(`Socket ${socket.id} joined room ${orderId}`);
-  });
+//   // Join the room for the order
+//   socket.on('joinRoom', (orderId) => {
+//     socket.join(orderId);
+//     console.log(`Socket ${socket.id} joined room ${orderId}`);
+//   });
 
-  // Handle sending a chat message
-  socket.on('chatMessage', ({ orderId, sender, message }) => {
-    console.log(`Room ${orderId} | ${sender}: ${message}`);
+//   // Handle sending a chat message
+//   socket.on('chatMessage', ({ orderId, sender, message }) => {
+//     console.log(`Room ${orderId} | ${sender}: ${message}`);
 
-    // Only emit to users in this order's room
-    io.to(orderId).emit('chatMessage', { sender, message });
-  });
+//     // Only emit to users in this order's room
+//     io.to(orderId).emit('chatMessage', { sender, message });
+//   });
 
-  socket.on('disconnect', () => {
-    console.log(`Client disconnected: ${socket.id}`);
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log(`Client disconnected: ${socket.id}`);
+//   });
+// });
 
 
 
