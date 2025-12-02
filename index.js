@@ -62,6 +62,7 @@ const orderFoodRoute = require('./routes/foodOrder');
 const paymentRoute = require('./routes/stripe');
 const loyaltyRoute = require('./routes/loyalty');
 const deliveryAppRoute = require('./routes/deliveryApp') // Import the loyalty route
+const control = require('./routes/control');
 
 
 const mongoose = require('mongoose');
@@ -114,6 +115,7 @@ app.use('/api/foodOrders',orderFoodRoute);
 app.use('/api/checkout',paymentRoute);
 app.use('/api/loyalty', loyaltyRoute); // Use the loyalty route
 app.use('/api/appSetting', deliveryAppRoute); // Use the delivery app route
+app.use('/api/control', control);
 
 
 // Handle 404 errors
