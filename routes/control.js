@@ -67,7 +67,7 @@ router.put('/:app_name', async (req, res) => {
     try {
         const { app_name } = req.params;
         const updates = req.body;
-        if (!mongoose.Types.ObjectId.isValid(app_name)) return res.status(400).json({ error: 'Invalid id' });
+       // if (!mongoose.Types.ObjectId.isValid(app_name)) return res.status(400).json({ error: 'Invalid id' });
 
         const control = await Control.updateOne({ app_name: app_name }, { $set: updates }, { new: true });
         if (!control) return res.status(404).json({ error: 'Control not found' });
