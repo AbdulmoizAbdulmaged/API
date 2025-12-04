@@ -63,13 +63,13 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /controls/:id - update an existing control
-router.put('/:id', async (req, res) => {
+router.put('/:app_name', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { app_name } = req.params;
         const updates = req.body;
-        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid id' });
+        if (!mongoose.Types.ObjectId.isValid(app_name)) return res.status(400).json({ error: 'Invalid id' });
 
-        const control = await Control.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+        const control = await Control.updateOne({ app_name: app_name }, { $set: updates }, { new: true });
         if (!control) return res.status(404).json({ error: 'Control not found' });
 
         res.status(200).json(control);
