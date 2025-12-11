@@ -73,32 +73,57 @@ router.get('/find/:id',async (req,res)=>{
 
 
 //GET all Foods
-router.get('/',async (req,res)=>{
-  try{
+// router.get('/',async (req,res)=>{
+//   try{
+//     let Foods;
+//     const qNew = req.query.new;
+//     const qCategory = req.query.category;
+
+//     if(qNew){
+      
+//       Foods = await Food.find().sort({createdAt: -1})
+//    }else if(qCategory)
+//    {
+//     Foods = await Food.find({
+//       categories:{
+//         $in: [qCategory]
+//       }
+//     })
+//    }else{
+//     Foods = await Food.find();
+  
+//    }
+//    res.status(200).json(Foods);
+//    return; // Prevents further execution
+//   }catch{
+
+//   }
+// })
+router.get('/', async (req, res) => {
+  try {
     let Foods;
     const qNew = req.query.new;
     const qCategory = req.query.category;
 
-    if(qNew){
-      
-      Foods = await Food.find().sort({createdAt: -1})
-   }else if(qCategory)
-   {
-    Foods = await Food.find({
-      categories:{
-        $in: [qCategory]
-      }
-    })
-   }else{
-    Foods = await Food.find();
-  
-   }
-   res.status(200).json(Foods);
-   return; // Prevents further execution
-  }catch{
+    // Base filter: only items with inStock = 1
+    let filter = { inStock: 1 };
 
+    if (qCategory) {
+      filter.categories = { $in: [qCategory] };
+    }
+
+    if (qNew) {
+      Foods = await Food.find(filter).sort({ createdAt: -1 });
+    } else {
+      Foods = await Food.find(filter);
+    }
+
+    res.status(200).json(Foods);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-})
+});
+
 
 
 
