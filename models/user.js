@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
     phone : {type : String,required : true,unique : true},
     address : {type : String},
     isAdmin : {type: Boolean,default: false},
-    img : {type: String},
+    img : {type: String,default: ""},
     wish : {type:Array,default:[]},
     type: {type: String, default: 'user'},//user,admin,delivery,cashier
     isBlocked : {type: Boolean,default: false},
