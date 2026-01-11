@@ -15,7 +15,10 @@ router.post('/register',async (req,res)=>{
   phone: req.body.phone,
   address: req.body.address,
   isAdmin: req.body.isAdmin,
-  img: req.body.img
+  img: req.body.img,
+  wish: req.body.wish,
+  type: req.body.type,
+  isBlocked: req.body.isBlocked,
  });
 
  try{
